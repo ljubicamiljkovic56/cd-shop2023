@@ -1,10 +1,11 @@
 package main;
 
+import shop.Shop;
+
 public class ShopMain {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Shop shop = new Shop();
 	}
 
 }
