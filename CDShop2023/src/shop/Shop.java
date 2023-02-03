@@ -1,11 +1,16 @@
 package shop;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import articles.Article;
 import articles.Book;
 import articles.CD;
 import articles.Composition;
+import persons.Gender;
 import persons.Seller;
 
 //This class contains all the methods for the entities
@@ -182,5 +187,95 @@ public class Shop {
 			}
 		}
 		return null;
+	}
+	
+	//add some article to bill
+	public void addToBill(String idCode, int cashRegNumber) {
+		Article article = findArticle(idCode);
+		if(article != null) {
+			cashRegister[cashRegNumber].addArticleOnBill(article);
+		}
+	}
+	
+	//method to save article to file articles.txt
+	public void saveArticleToFile() {
+		try {
+			File articlesFile = new File("src/files/articles.txt");
+			String content = "";
+			for (CD cd : cds) {
+				content += "CD| " + cd.getIdCode() + "|" +
+							cd.getPublisher() + "|" +
+							cd.getYearOfRelease() + "|" +
+							cd.getPrice() + "|" +
+							cd.getNumberOfAvailableCopies() + "|" +
+							cd.getNumberOfSoldOutCopies() + "|" +
+							cd.getName() + "|" +
+							cd.getPerformer() + "|" +
+							cd.getGenre() + "\n";
+			}
+			for (Book book : books) {
+				content += "Book|" + book.getIdCode() + "|" +
+							book.getPublisher() + "|" +
+							book.getYearOfRelease() + "|" +
+							book.getPrice() + "|" + 
+							book.getNumberOfAvailableCopies() + "|" +
+							book.getNumberOfSoldOutCopies() + "|" +
+							book.getName() + "|" +
+							book.getAuthor() + "|" +
+							book.getNumberOfPages() + "|" +
+							book.isHardCover() + "\n";
+			}
+			BufferedWriter writer = new BufferedWriter(new FileWriter(articlesFile));
+			writer.write(content);
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//method to save seller to file sellers.txt
+	public void saveSellerToFile() {
+		try {
+			File sellersFile = new File("src/files/sellers.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(sellersFile));
+			String content = "";
+			for (Seller seller : sellers) {
+				content += 	seller.getName() + "|" + 
+							seller.getSurname() + "|" +
+							seller.getUsername() + "|" + 
+							seller.getPassword() +
+							"|" + Gender.toInt(seller.getGender()) + "\n";
+			}
+			writer.write(content);
+			writer.close();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//method to save composition to file compositions.txt
+	public void saveCompositionToFile() {
+		try {
+			File compositionsFile = new File("src/files/compositions.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(compositionsFile));
+			String content = "";
+			for (Composition composition : compositions) {
+				content += 	composition.getName() + "|" + 
+							composition.getDuration() + "|";
+				CD cd = findCD(composition);
+				if(cd != null) {
+					content += cd.getIdCode();
+				}
+				content += "\n";
+			}
+			writer.write(content);
+			writer.close();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadArticleFromFile() {
+		
 	}
 }
