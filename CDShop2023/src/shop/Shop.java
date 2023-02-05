@@ -1,7 +1,9 @@
 package shop;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -275,7 +277,70 @@ public class Shop {
 		}
 	}
 	
+	//load articles from file, no matter if it's book or cd
 	public void loadArticleFromFile() {
-		
+		try {
+			File articlesFile = new File("src/files/articles.txt");
+			BufferedReader br = new BufferedReader(new FileReader(articlesFile));
+			String line = null;
+			while((line = br.readLine()) != null) {
+				String[] split = line.split("\\|");
+				String articleType = split[0];
+				String idCode = split[1];
+				String publisher = split[2];
+				String yearOfReleaseString = split[3];
+				int yearOfRelease = Integer.parseInt(yearOfReleaseString);
+				String priceString = split[4];
+				double price = Double.parseDouble(priceString);
+				String availableString = split[5];
+				int availableCopies = Integer.parseInt(availableString);
+				String soldOutString = split[6];
+				int soldOut = Integer.parseInt(soldOutString);
+				String name = split[7];
+				if(articleType.equals("CD")) {
+					String performer = split[8];
+					String genre = split[9];
+					ArrayList<Composition> compositions = new ArrayList<Composition>();
+					CD cd = new CD(idCode, publisher, yearOfRelease, price, availableCopies, soldOut, 
+							name, performer, genre, compositions);
+					cds.add(cd);
+				}else if(articleType.equals("Book")) {
+					String author = split[8];
+					String numberOfPagesString = split[9];
+					int numberOfPages = Integer.parseInt(numberOfPagesString);
+					String coverString = split[10];
+					boolean cover = Boolean.parseBoolean(coverString);
+					Book book = new Book(idCode, publisher, yearOfRelease, price, availableCopies, soldOut, 
+							name, author, numberOfPages, cover);
+					books.add(book);
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//method to load sellers from sellers.txt file
+	public void loadSellersFromFile() {
+		try {
+			File sellersFile = new File("src/files/sellers.txt");
+			BufferedReader br = new BufferedReader(new FileReader(sellersFile));
+			String line = null;
+			while((line = br.readLine()) != null) {
+				String[] split = line.split("\\|");
+				String name = split[0];
+				String surname = split[1];
+				String username = split[2];
+				String password = split[3];
+				int genderInt = Integer.parseInt(split[4]);
+				Gender gender = Gender.toValue(genderInt);
+				Seller seller = new Seller(name, surname, username, password, gender);
+				sellers.add(seller);
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
