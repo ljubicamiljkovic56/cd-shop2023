@@ -343,4 +343,28 @@ public class Shop {
 			e.printStackTrace();
 		}
 	}
+	
+	//method to load compositions from compositions.txt
+	public void loadCompositionsFromFile() {
+		try {
+			File compositionsFile = new File("src/files/compositions.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(compositionsFile));
+			String line = null;
+			while((line = reader.readLine()) != null) {
+				String[] split = line.split("\\|");
+				String name = split[0];
+				int duration = Integer.parseInt(split[1]);
+				String cdIdCode = split[2];
+				Composition composition = new Composition(name, duration);
+				CD cd = (CD) findArticle(cdIdCode);
+				if(cd != null) {
+					cd.getCompositions().add(composition);
+				}
+				compositions.add(composition);
+			}
+			reader.close();
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
