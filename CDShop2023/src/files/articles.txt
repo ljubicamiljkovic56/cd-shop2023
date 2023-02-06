@@ -1,0 +1,2 @@
+CD|1|Hybe|2022|1500|400|300|New Jeans - Ditto|New Jeans|Kpop
+Book|2|Barnes Noble|2012|500|200|100|The Great Gatsby|F. Scott Fitzgerald|200|true
