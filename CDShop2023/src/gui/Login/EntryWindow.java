@@ -26,12 +26,13 @@ public class EntryWindow extends JFrame {
 	private JMenuItem sellersItem;
 	
 	private Shop shop;
+	@SuppressWarnings("unused")
 	private Seller loggedSeller;
 	
 	public EntryWindow(Shop shop, Seller loggedSeller) {
 		this.shop = shop;
 		this.loggedSeller = loggedSeller;
-		setTitle("Welcome to shop - " + loggedSeller.getSurname());
+		setTitle("Welcome to shop - " + loggedSeller.getUsername());
 		setSize(500, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
