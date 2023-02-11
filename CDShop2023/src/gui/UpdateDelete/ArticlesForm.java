@@ -2,6 +2,7 @@ package gui.UpdateDelete;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import articles.Article;
@@ -25,6 +26,9 @@ public class ArticlesForm extends JFrame {
 	private JTextField txtSoldOut = new JTextField(20);
 	private JLabel lblName = new JLabel("Name");
 	private JTextField txtName = new JTextField(20);
+	private JLabel lblType = new JLabel("Type");
+	private JRadioButton rbtnCD = new JRadioButton("CD");
+	private JRadioButton rbtnBook = new JRadioButton("Book");
 	
 	private Shop shop;
 	private Article article;
