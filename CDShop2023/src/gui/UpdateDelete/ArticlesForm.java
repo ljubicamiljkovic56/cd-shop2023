@@ -1,11 +1,16 @@
 package gui.UpdateDelete;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import articles.Article;
+import net.miginfocom.swing.MigLayout;
 import shop.Shop;
 
 //class for editing articles form
@@ -30,6 +35,19 @@ public class ArticlesForm extends JFrame {
 	private JRadioButton rbtnCD = new JRadioButton("CD");
 	private JRadioButton rbtnBook = new JRadioButton("Book");
 	
+	private JLabel lblPerformer = new JLabel("Performer");
+	private JTextField txtPerformer = new JTextField(20);
+	private JLabel lblGenre = new JLabel("Genre");
+	private JTextField txtGenre = new JTextField(20);
+	private JLabel lblAuthor = new JLabel("Author");
+	private JTextField txtAuthor = new JTextField(20);
+	private JLabel lblNumberOfPages = new JLabel("Number of Pages");
+	private JTextField txtNumberOfPages = new JTextField(20);
+	private JLabel lblHardCover = new JLabel("Hard Cover");
+	private JCheckBox cbHardCover = new JCheckBox();
+	private JButton btnOK = new JButton("OK");
+	private JButton btnCancel = new JButton("Cancel");
+	
 	private Shop shop;
 	private Article article;
 	
@@ -50,11 +68,143 @@ public class ArticlesForm extends JFrame {
 	}
 	
 	private void initGUI() {
+		MigLayout layout = new MigLayout("wrap 2");
+		setLayout(layout);
+		
+		if(article != null) {
+			fillTheFields();
+		}else {
+			rbtnCD.setSelected(true);
+			enableCDFields(true);
+		}
+		
+		add(lblIdCode);
+		add(txtIdCode);
+		add(lblPublisher);
+		add(txtPublisher);
+		add(lblYear);
+		add(txtYear);
+		add(lblPrice);
+		add(txtPrice);
+		add(lblAvailable);
+		add(txtAvailable);
+		add(lblSoldOut);
+		add(txtSoldOut);
+		add(lblName);
+		add(txtName);
+		add(lblType);
+		ButtonGroup typeGroup = new ButtonGroup();
+		typeGroup.add(rbtnCD);
+		typeGroup.add(rbtnBook);
+		add(rbtnCD, "split 2");
+		add(rbtnBook);
+		add(lblPublisher);
+		add(txtPublisher);
+		add(lblGenre);
+		add(txtGenre);
+		add(lblAuthor);
+		add(txtAuthor);
+		add(lblNumberOfPages);
+		add(txtNumberOfPages);
+		add(lblHardCover);
+		add(cbHardCover);
+		add(new JLabel());
+		add(btnOK, "split 2");
+		add(btnCancel);
 		
 	}
 	
 	private void initActions() {
 		
+	}
+	
+	private void enableCDFields(boolean enable) {
+		txtPerformer.setEnabled(enable);
+		txtGenre.setEnabled(enable);
+		txtAuthor.setEnabled(!enable);
+		txtNumberOfPages.setEnabled(!enable);
+		cbHardCover.setEnabled(!enable);
+	}
+	
+	private void enableBookFields(boolean enable) {
+		txtPerformer.setEnabled(!enable);
+		txtGenre.setEnabled(!enable);
+		txtAuthor.setEnabled(enable);
+		txtNumberOfPages.setEnabled(enable);
+		cbHardCover.setEnabled(enable);
+	}
+	
+	private void fillTheFields() {
+		
+	}
+	
+	private boolean validation() {
+		boolean ok = true;
+		String message = "Please enter valid data:\n";
+		
+		if(txtIdCode.getText().trim().equals("")) {
+			message += "- Enter ID code\n";
+			ok = false;
+		}
+		if(txtPublisher.getText().trim().equals("")) {
+			message += "- Enter publisher\n";
+			ok = false;
+		}
+		try {
+			Integer.parseInt(txtYear.getText().trim());
+		}catch (NumberFormatException e) {
+			message += "- Enter year of release\n";
+			ok = false;
+		}
+		try {
+			Double.parseDouble(txtPrice.getText().trim());
+		}catch (NumberFormatException e) {
+			message += "- Enter price\n";
+			ok = false;
+		}
+		try {
+			Integer.parseInt(txtAvailable.getText().trim());
+		}catch (NumberFormatException e) {
+			message += "- Enter number of available copies\n";
+			ok = false;
+		}
+		try {
+			Integer.parseInt(txtSoldOut.getText().trim());
+		}catch (NumberFormatException e) {
+			message += "- Enter number of sold out copies\n";
+			ok = false;
+		}
+		if(txtName.getText().trim().equals("")) {
+			message += "- Enter name\n";
+			ok = false;
+		}
+		if(rbtnCD.isSelected()) {
+			if(txtPerformer.getText().trim().equals("")) {
+				message += "- Enter perfomer\n";
+				ok = false;
+			}
+			if(txtGenre.getText().trim().equals("")) {
+				message += "- Enter genre\n";
+				ok = false;
+			}
+		}else {
+			if(txtAuthor.getText().trim().equals("")) {
+				message += "- Enter author\n";
+				ok = false;
+			}
+			try {
+				Integer.parseInt(txtNumberOfPages.getText().trim());
+			}catch (NumberFormatException e) {
+				message += "- Enter a number of pages (number)\n";
+				ok = false;
+			}
+		}
+		
+		if(ok == false) {
+			JOptionPane.showMessageDialog(null, message, "Invalid data", 
+					JOptionPane.WARNING_MESSAGE);
+		}
+		return ok;
 	}
 
 }
