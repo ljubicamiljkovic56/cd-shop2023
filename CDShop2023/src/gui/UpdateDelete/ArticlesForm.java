@@ -10,6 +10,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import articles.Article;
+import articles.Book;
+import articles.CD;
 import net.miginfocom.swing.MigLayout;
 import shop.Shop;
 
@@ -135,6 +137,27 @@ public class ArticlesForm extends JFrame {
 	}
 	
 	private void fillTheFields() {
+		txtIdCode.setText(article.getIdCode());
+		txtPublisher.setText(article.getPublisher());
+		txtYear.setText(String.valueOf(article.getYearOfRelease()));
+		txtPrice.setText(String.valueOf(article.getPrice()));
+		txtAvailable.setText(String.valueOf(article.getNumberOfAvailableCopies()));
+		txtSoldOut.setText(String.valueOf(article.getNumberOfSoldOutCopies()));
+		txtName.setText(article.getName());
+		if(article instanceof CD) {
+			CD cd = (CD) article;
+			enableCDFields(true);
+			txtPerformer.setText(cd.getPerformer());
+			txtGenre.setText(cd.getGenre());
+		}else if(article instanceof Book) {
+			Book book = (Book) article;
+			enableBookFields(true);
+			txtAuthor.setText(book.getAuthor());
+			txtNumberOfPages.setText(String.valueOf(book.getNumberOfPages()));
+			cbHardCover.setSelected(book.isHardCover());
+		}
+		rbtnCD.setEnabled(false);
+		rbtnBook.setEnabled(false);
 		
 	}
 	
