@@ -1,5 +1,9 @@
 package gui.UpdateDelete;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,6 +16,7 @@ import javax.swing.JTextField;
 import articles.Article;
 import articles.Book;
 import articles.CD;
+import articles.Composition;
 import net.miginfocom.swing.MigLayout;
 import shop.Shop;
 
@@ -100,8 +105,8 @@ public class ArticlesForm extends JFrame {
 		typeGroup.add(rbtnBook);
 		add(rbtnCD, "split 2");
 		add(rbtnBook);
-		add(lblPublisher);
-		add(txtPublisher);
+		add(lblPerformer);
+		add(txtPerformer);
 		add(lblGenre);
 		add(txtGenre);
 		add(lblAuthor);
@@ -117,7 +122,79 @@ public class ArticlesForm extends JFrame {
 	}
 	
 	private void initActions() {
-		
+		rbtnCD.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableCDFields(rbtnCD.isSelected());
+			}
+		});
+		rbtnBook.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableBookFields(rbtnBook.isSelected());
+			}
+		});
+				
+		btnOK.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(validation() == true) {
+					String idCode = txtIdCode.getText().trim();
+					String publisher = txtPublisher.getText().trim();
+					int year = Integer.parseInt(txtYear.getText().trim());
+					double price = Double.parseDouble(txtPrice.getText().trim());
+					int available = Integer.parseInt(txtAvailable.getText().trim());
+					int soldOut = Integer.parseInt(txtSoldOut.getText().trim());
+					String name = txtName.getText().trim();
+					if(rbtnCD.isSelected()) {
+						String performer = txtPerformer.getText().trim();
+						String genre = txtGenre.getText().trim();
+						if(article != null) {
+							CD cd = (CD) article;
+							cd.setIdCode(idCode);
+							cd.setPublisher(publisher);
+							cd.setYearOfRelease(year);
+							cd.setPrice(price);
+							cd.setNumberOfAvailableCopies(available);
+							cd.setNumberOfSoldOutCopies(soldOut);
+							cd.setName(name);
+							cd.setPerformer(performer);
+							cd.setGenre(genre);
+						}else {
+							CD cd = new CD(idCode, publisher, 
+									year, price, available, soldOut, 
+									name, performer, genre, new ArrayList<Composition>());
+							shop.getCds().add(cd);
+						}
+					}else {
+						String author = txtAuthor.getText().trim();
+						int numberOfPages = Integer.parseInt(txtNumberOfPages.getText().trim());
+						boolean hardCover = cbHardCover.isSelected();
+						if(article != null) {
+							Book book = (Book) article;
+							book.setIdCode(idCode);
+							book.setPublisher(publisher);
+							book.setYearOfRelease(year);
+							book.setPrice(price);
+							book.setNumberOfAvailableCopies(available);
+							book.setNumberOfSoldOutCopies(soldOut);
+							book.setName(name);
+							book.setAuthor(author);
+							book.setNumberOfPages(numberOfPages);
+							book.setHardCover(hardCover);
+						}else {
+							Book book = new Book(idCode, publisher, year, price, 
+									available, soldOut, name, author, 
+									numberOfPages, hardCover);
+							shop.getBooks().add(book);
+						}
+					}
+					shop.saveArticleToFile();
+					ArticlesForm.this.dispose();
+					ArticlesForm.this.setVisible(false);
+				}
+			}
+		});
 	}
 	
 	private void enableCDFields(boolean enable) {

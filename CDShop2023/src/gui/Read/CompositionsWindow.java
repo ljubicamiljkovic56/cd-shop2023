@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,6 +37,11 @@ public class CompositionsWindow extends JFrame {
 		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
+		JLabel background;
+		ImageIcon img = new ImageIcon(getClass().getResource("/pictures/cdicon.jpg"));
+		background = new JLabel(img);
+		background.setBounds(0,0,800,800);
+		add(background);
 		initGUI();
 		initActions();
 	}

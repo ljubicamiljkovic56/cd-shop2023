@@ -3,7 +3,9 @@ package gui.Login;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -58,6 +60,12 @@ public class EntryWindow extends JFrame {
 		this.mainMenu.add(sellersMenu);
 		
 		setJMenuBar(this.mainMenu);
+		
+		JLabel background;
+		ImageIcon img = new ImageIcon(getClass().getResource("/pictures/cdicon.jpg"));
+		background = new JLabel(img);
+		background.setBounds(0,0,500,500);
+		add(background);
 	}
 	
 	private void initActions() {
